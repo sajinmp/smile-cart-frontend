@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Left, Right } from "neetoicons";
-import { Button } from "neetoui";
+import { IconButton, Box, Flex, Image } from "@chakra-ui/react";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 const Carousel = ({ imageUrls, title }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,9 +14,7 @@ const Carousel = ({ imageUrls, title }) => {
   });
 
   const resetTimer = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
+    if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(handleNext, 3000);
   };
 
@@ -34,52 +32,49 @@ const Carousel = ({ imageUrls, title }) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex items-center space-x-4">
-        <Button
-          className="shrink-0 focus-within:ring-0 hover:bg-transparent"
-          icon={Left}
-          style="text"
+    <Flex align="center" direction="column">
+      <Flex align="center" gap={4}>
+        <IconButton
+          aria-label="Previous"
+          variant="ghost"
           onClick={handlePrevious}
-        />
-        <img
+        >
+          <LuChevronLeft />
+        </IconButton>
+        <Image
           alt={title}
-          className="max-w-56 h-56 max-h-56 w-56"
+          boxSize="56"
+          objectFit="cover"
           src={imageUrls[currentIndex]}
         />
-        <Button
-          className="shrink-0 focus-within:ring-0 hover:bg-transparent"
-          icon={Right}
-          style="text"
+        <IconButton
+          aria-label="Next"
+          variant="ghost"
           onClick={() => {
             handleNext();
             resetTimer();
           }}
-        />
-      </div>
-      <div className="flex space-x-1">
-        {imageUrls.map((_, index) => {
-          const defaultClasses =
-            "neeto-ui-border-black neeto-ui-rounded-full h-3 w-3 cursor-pointer border";
-
-          const dotClassNames =
-            index === currentIndex
-              ? defaultClasses.concat(" neeto-ui-bg-black")
-              : defaultClasses;
-
-          return (
-            <span
-              className={dotClassNames}
-              key={index}
-              onClick={() => {
-                setCurrentIndex(index);
-                resetTimer();
-              }}
-            />
-          );
-        })}
-      </div>
-    </div>
+        >
+          <LuChevronRight />
+        </IconButton>
+      </Flex>
+      <Flex gap={1} mt={2}>
+        {imageUrls.map((_, index) => (
+          <Box
+            bg={index === currentIndex ? "black" : "transparent"}
+            border="1px solid black"
+            borderRadius="full"
+            boxSize={3}
+            cursor="pointer"
+            key={index}
+            onClick={() => {
+              setCurrentIndex(index);
+              resetTimer();
+            }}
+          />
+        ))}
+      </Flex>
+    </Flex>
   );
 };
 
