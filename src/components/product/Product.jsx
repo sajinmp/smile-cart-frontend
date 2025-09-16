@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 
 import { Spinner, Box, Text, Flex, Stack } from "@chakra-ui/react";
-import axios from "axios";
+import productsApi from "apis/products";
 
-import { API_URL } from "../../constants";
 import Carousel from "../shared/Carousel";
 
 const Product = () => {
@@ -12,7 +11,7 @@ const Product = () => {
 
   const fetchProduct = async () => {
     try {
-      const response = await axios.get(`${API_URL}/products/infinix-inbook-2`);
+      const response = await productsApi.show();
       setProduct(response.data);
     } catch (error) {
       console.error("Error fetching product:", error);
