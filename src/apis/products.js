@@ -1,7 +1,9 @@
 import axios from "axios";
 
-const show = () => axios.get("products/infinix-inbook-2");
+const index = () => axios.get("products");
 
-const productsApi = { show };
+const show = slug => axios.get(`products/${slug}`);
+
+const productsApi = { index, show };
 
 export default productsApi;

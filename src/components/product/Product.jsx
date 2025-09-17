@@ -2,19 +2,27 @@ import { useState, useEffect } from "react";
 
 import { Spinner, Box, Text, Flex, Stack } from "@chakra-ui/react";
 import productsApi from "apis/products";
+import { FiArrowLeft } from "react-icons/fi";
+import { useParams, useHistory } from "react-router-dom";
 
 import Carousel from "./Carousel";
+
+import PageNotFound from "../PageNotFound";
 
 const Product = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const history = useHistory();
+
+  const { slug } = useParams();
 
   const fetchProduct = async () => {
     try {
-      const product = await productsApi.show();
+      const product = await productsApi.show(slug);
       setProduct(product);
-    } catch (error) {
-      console.error("Error fetching product:", error);
+    } catch {
+      setIsError(true);
     } finally {
       setLoading(false);
     }
@@ -32,6 +40,8 @@ const Product = () => {
     );
   }
 
+  if (isError) return <PageNotFound />;
+
   if (!product) {
     return (
       <Flex align="center" height="100vh" justify="center">
@@ -47,10 +57,22 @@ const Product = () => {
   return (
     <Box p={6}>
       <Box mb={6}>
-        <Text fontSize="4xl" fontWeight="semibold" mb={2}>
-          {product?.name}
-        </Text>
-        <Box bg="black" height="2px" mb={6} />
+        <Flex align="center" mb={4}>
+          <Box
+            _hover={{ bg: "gray.400", cursor: "pointer" }}
+            as={FiArrowLeft}
+            borderRadius="full"
+            boxSize="3em"
+            mb={2}
+            mr={6}
+            p={2}
+            onClick={history.goBack}
+          />
+          <Text fontSize="4xl" fontWeight="semibold" mb={2}>
+            {product?.name}
+          </Text>
+          <Box bg="black" height="2px" mb={6} />
+        </Flex>
       </Box>
       <Flex direction={{ base: "column", md: "row" }} gap={6}>
         <Box flex="2">
