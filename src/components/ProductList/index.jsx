@@ -1,14 +1,9 @@
 import { useState, useEffect } from "react";
 
-import {
-  Spinner,
-  Flex,
-  SimpleGrid,
-  Separator,
-  Heading,
-  Box,
-} from "@chakra-ui/react";
+import { Flex, SimpleGrid, Separator } from "@chakra-ui/react";
 import productsApi from "apis/products";
+import Header from "components/shared/Header";
+import Loader from "components/shared/Loader";
 
 import ProductListItem from "./ProductListItem";
 
@@ -31,22 +26,12 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
-  if (loading) {
-    return (
-      <Flex align="center" height="100vh" justify="center">
-        <Spinner color="teal.500" emptyColor="gray.200" size="xl" />
-      </Flex>
-    );
-  }
+  if (loading) return <Loader />;
 
   return (
     <Flex direction="column" m={2}>
-      <Box>
-        <Heading as="h1" size="4xl">
-          Shopping Mall
-        </Heading>
-        <Separator borderColor="black" size="sm" />
-      </Box>
+      <Header showBackButton={false} title="Products" />
+      <Separator borderColor="black" mb={5} />
       <SimpleGrid
         columns={{ base: 2, md: 3, lg: 4 }}
         justifyItems="center"

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 
-import { Spinner, Box, Text, Flex, Stack } from "@chakra-ui/react";
+import { Box, Text, Flex, Stack, Separator } from "@chakra-ui/react";
 import productsApi from "apis/products";
-import { FiArrowLeft } from "react-icons/fi";
-import { useParams, useHistory } from "react-router-dom";
+import Header from "components/shared/Header";
+import Loader from "components/shared/Loader";
+import { useParams } from "react-router-dom";
 
 import Carousel from "./Carousel";
 
@@ -13,7 +14,6 @@ const Product = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const history = useHistory();
 
   const { slug } = useParams();
 
@@ -32,13 +32,7 @@ const Product = () => {
     fetchProduct();
   }, []);
 
-  if (loading) {
-    return (
-      <Flex align="center" height="100vh" justify="center">
-        <Spinner color="teal.500" emptyColor="gray.200" size="xl" />
-      </Flex>
-    );
-  }
+  if (loading) return <Loader />;
 
   if (isError) return <PageNotFound />;
 
@@ -56,24 +50,8 @@ const Product = () => {
 
   return (
     <Box p={6}>
-      <Box mb={6}>
-        <Flex align="center" mb={4}>
-          <Box
-            _hover={{ bg: "gray.400", cursor: "pointer" }}
-            as={FiArrowLeft}
-            borderRadius="full"
-            boxSize="3em"
-            mb={2}
-            mr={6}
-            p={2}
-            onClick={history.goBack}
-          />
-          <Text fontSize="4xl" fontWeight="semibold" mb={2}>
-            {product?.name}
-          </Text>
-          <Box bg="black" height="2px" mb={6} />
-        </Flex>
-      </Box>
+      <Header showBackButton title={product?.name} />
+      <Separator borderColor="black" mb={5} />
       <Flex direction={{ base: "column", md: "row" }} gap={6}>
         <Box flex="2">
           <Carousel imageUrls={imageUrls} title={product?.name} />
