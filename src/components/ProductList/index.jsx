@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 
 import { Flex, SimpleGrid, Separator } from "@chakra-ui/react";
 import productsApi from "apis/products";
-import Header from "components/shared/Header";
-import Loader from "components/shared/Loader";
+import { Header, Loader } from "components/shared";
 
 import ProductListItem from "./ProductListItem";
 

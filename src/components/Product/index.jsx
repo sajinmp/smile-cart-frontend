@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 
 import { Box, Text, Flex, Stack, Separator } from "@chakra-ui/react";
 import productsApi from "apis/products";
-import Header from "components/shared/Header";
-import Loader from "components/shared/Loader";
+import { Header, Loader } from "components/shared";
 import { useParams } from "react-router-dom";
 
 import Carousel from "./Carousel";
 
-import PageNotFound from "../PageNotFound";
+import PageNotFound from "../shared/PageNotFound";
 
 const Product = () => {
   const [product, setProduct] = useState(null);
@@ -17,20 +16,20 @@ const Product = () => {
 
   const { slug } = useParams();
 
-  const fetchProduct = async () => {
-    try {
-      const product = await productsApi.show(slug);
-      setProduct(product);
-    } catch {
-      setIsError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const product = await productsApi.show(slug);
+        setProduct(product);
+      } catch {
+        setIsError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchProduct();
-  }, []);
+  }, [slug]);
 
   if (loading) return <Loader />;
 
