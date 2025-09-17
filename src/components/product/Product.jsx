@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Spinner, Box, Text, Flex, Stack } from "@chakra-ui/react";
 import productsApi from "apis/products";
 
-import Carousel from "../shared/Carousel";
+import Carousel from "./Carousel";
 
 const Product = () => {
   const [product, setProduct] = useState(null);
